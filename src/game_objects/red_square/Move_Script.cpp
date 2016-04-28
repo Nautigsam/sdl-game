@@ -3,18 +3,18 @@
 
 namespace SDLGame_GameObjects {
 
-    void MoveScript::Start(GameObject *gameobject) {
-        red_square *go = (red_square*)gameobject;
+    void MoveScript::Start(std::shared_ptr<GameObject> gameobject) {
+        std::shared_ptr<red_square> go = std::dynamic_pointer_cast<red_square>(gameobject);
 
         go->w = 100;
         go->h = 100;
         go->color = {255, 0, 0, 255};
     }
 
-    void MoveScript::Update(GameObject *gameobject) {
-        red_square *go = (red_square*)gameobject;
+    void MoveScript::Update(std::shared_ptr<GameObject> gameobject) {
+        std::shared_ptr<red_square> go = std::dynamic_pointer_cast<red_square>(gameobject);
 
-        const Uint8 *state = SDL_GetKeyboardState(nullptr);
+        const Uint8 *state = SDL_GetKeyboardState(NULL);
         if (state[SDL_SCANCODE_W]) {
             go->transform.y -= 20;
         }

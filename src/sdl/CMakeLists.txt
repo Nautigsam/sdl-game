@@ -1,6 +1,5 @@
 set(SOURCEFILES
         ${SOURCEFILES}
-        ${CMAKE_CURRENT_SOURCE_DIR}/Init_Exception.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SDL.cpp
         PARENT_SCOPE
 )

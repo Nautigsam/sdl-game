@@ -10,13 +10,20 @@ namespace SDLGame_GameObjects {
     }
     GameObject::~GameObject() {
         for (auto script : scripts) {
-            delete script;
+            script.reset();
+        }
+    }
+    void GameObject::Start() {
+        for (auto script : scripts) {
+            if (script != nullptr) {
+                script->Start(shared_from_this());
+            }
         }
     }
     void GameObject::Update() {
         for (auto script : scripts) {
             if (script != nullptr) {
-                script->Update(this);
+                script->Update(shared_from_this());
             }
         }
     }

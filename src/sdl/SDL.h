@@ -1,34 +1,39 @@
 #ifndef SDLGAME_SDL_H
 #define SDLGAME_SDL_H
 
+#include <memory>
 #include "SDL2/SDL.h"
-#include "Init_Exception.h"
+#include "../errors/Error_Container.h"
 
-class SDL {
+struct SDL_Deleter {
+    void operator()(SDL_Window *p) const { SDL_DestroyWindow(p); }
+    void operator()(SDL_Renderer *p) const { SDL_DestroyRenderer(p); }
+    void operator()(SDL_Texture *p) const { SDL_DestroyTexture(p); }
+};
+
+class SDL : public SDLGame_Errors::ErrorContainer {
 public:
-    SDL_Window *getMainWindow() const {
+    std::unique_ptr<SDL_Window, SDL_Deleter> &getMainWindow() {
         return mainWindow;
     }
 
-    SDL_Renderer *getMainRenderer() const {
+    std::unique_ptr<SDL_Renderer, SDL_Deleter> &getMainRenderer() {
         return mainRenderer;
     }
 
-    static SDL &getInstance(Uint32 flags = 0) throw(InitError) {
+    static SDL &GetInstance(Uint32 flags = 0) {
         static SDL instance(flags);
         return instance;
     }
 
     SDL(SDL const &) = delete;
-
     void operator=(SDL const &) = delete;
 
 private:
-    SDL_Window *mainWindow;
-    SDL_Renderer *mainRenderer;
+    std::unique_ptr<SDL_Window, SDL_Deleter> mainWindow;
+    std::unique_ptr<SDL_Renderer, SDL_Deleter> mainRenderer;
 
-    SDL(Uint32 flags = 0) throw(InitError);
-
+    SDL(Uint32 flags = 0);
     virtual ~SDL();
 };
 

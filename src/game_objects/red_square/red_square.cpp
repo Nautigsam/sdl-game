@@ -6,19 +6,15 @@ namespace SDLGame_GameObjects {
             : GameObject(name) {
         transform.x = 50;
         transform.y = 50;
-        MoveScript *moveScript = new MoveScript();
-        moveScript->Start(this);
-        scripts.insert(scripts.end(), moveScript);
+        scripts.insert(scripts.end(), std::make_shared<MoveScript>());
     }
 
-    red_square::~red_square() {
+    red_square::~red_square() { }
 
-    }
-
-    void red_square::Render(SDL_Renderer *renderer) const {
-        SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-        SDL_Rect rect = {this->transform.x, this->transform.y, w, h};
-        SDL_RenderFillRect(renderer, &rect);
+    void red_square::Render(std::unique_ptr<SDL_Renderer, SDL_Deleter> &renderer) const {
+        SDL_SetRenderDrawColor(renderer.get(), color.r, color.g, color.b, color.a);
+        SDL_Rect rect = {transform.x, transform.y, w, h};
+        SDL_RenderFillRect(renderer.get(), &rect);
     }
 
 }

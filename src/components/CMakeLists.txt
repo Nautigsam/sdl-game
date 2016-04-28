@@ -1,4 +1,0 @@
-set(SOURCEFILES
-        ${SOURCEFILES}
-        PARENT_SCOPE
-)

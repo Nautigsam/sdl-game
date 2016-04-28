@@ -14,11 +14,11 @@ public:
     Scene(const std::string &name = "");
     virtual ~Scene();
 
-    void add_object(SDLGame_GameObjects::GameObject* object);
+    void add_object(std::shared_ptr<SDLGame_GameObjects::GameObject> &object);
     void run();
 private:
     const std::string name;
-    std::map<std::string, SDLGame_GameObjects::GameObject*> objects;
+    std::map<std::string, std::shared_ptr<SDLGame_GameObjects::GameObject>> objects;
 };
 
 

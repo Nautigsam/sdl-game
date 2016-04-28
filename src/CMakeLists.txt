@@ -1,4 +1,4 @@
-add_subdirectory(components)
+add_subdirectory(errors)
 add_subdirectory(game_objects)
 add_subdirectory(scenes)
 add_subdirectory(sdl)

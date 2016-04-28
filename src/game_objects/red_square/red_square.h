@@ -6,12 +6,14 @@
 
 namespace SDLGame_GameObjects {
 
-    class red_square : public GameObject {
+    class red_square : public GameObject, public EnableSharedThis<red_square> {
         friend class MoveScript;
     public:
+        using EnableSharedThis<red_square>::shared_from_this;
+
         red_square(const std::string &name);
         virtual ~red_square();
-        virtual void Render(SDL_Renderer *renderer) const override;
+        virtual void Render(std::unique_ptr<SDL_Renderer, SDL_Deleter> &renderer) const override;
 
     private:
         int w;

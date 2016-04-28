@@ -7,20 +7,19 @@
 
 int main(int argc, char *argv[]) {
     SDL_SetMainReady();
-    try {
-        SDL::getInstance(SDL_INIT_VIDEO | SDL_INIT_TIMER);
-
-        SDLGame_GameObjects::red_square *redSquare = new SDLGame_GameObjects::red_square("red square");
-        Scene mainScene("main");
-        mainScene.add_object(redSquare);
-
-        mainScene.run();
-
-        return 0;
+    bool error = SDL::GetInstance(SDL_INIT_VIDEO | SDL_INIT_TIMER).HasError();
+    if (error) {
+        std::cout << "An error occured: " << SDL::GetInstance().GetLastError() << std::endl;
+        exit(EXIT_FAILURE);
     }
-    catch (const InitError &err) {
-        std::cerr
-        << "Error while initializing SDL:  "
-        << err.what() << std::endl;
-    }
+
+    auto redSquare = std::make_shared<SDLGame_GameObjects::red_square>("red square");
+
+    Scene mainScene("main");
+    auto ptrToAdd = std::dynamic_pointer_cast<SDLGame_GameObjects::GameObject>(redSquare);
+    mainScene.add_object(ptrToAdd);
+
+    mainScene.run();
+
+    exit(EXIT_SUCCESS);
 }

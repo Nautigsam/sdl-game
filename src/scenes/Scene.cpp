@@ -21,7 +21,8 @@ void Scene::run() {
     for (auto object : objects) {
         object.second->Start();
     }
-    auto &renderer = SDL::GetInstance().getMainRenderer();
+    auto &sdl = SDL::GetInstance();
+    auto &renderer = sdl.getMainRenderer();
     Uint32 frametime;
     SDL_Event event;
     while (true) {
@@ -40,12 +41,11 @@ void Scene::run() {
         if (!SDL_TICKS_PASSED(newFrameTime, frametime + 15)) {
             SDL_Delay((frametime + 15) - newFrameTime);
         }
-        SDL_SetRenderDrawColor(renderer.get(), 0x00, 0x00, 0x00, 0xFF);
-        SDL_RenderClear(renderer.get());
+        sdl.BeginFrame();
         for (auto object : objects) {
             object.second->Render(renderer);
         }
-        SDL_RenderPresent(renderer.get());
+        sdl.EndFrame();
     }
 }
 

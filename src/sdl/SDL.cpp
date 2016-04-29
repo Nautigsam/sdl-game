@@ -1,6 +1,8 @@
+#include <iostream>
 #include "SDL.h"
 
-SDL::SDL(Uint32 flags) {
+SDL::SDL(Uint32 flags) :
+    framecounter(0), timecounter(0) {
     if (SDL_Init(flags) != 0) {
         SetError(std::make_shared<SDLGame_Errors::Error>(SDLGame_Errors::SDLGAME_ERROR_TYPE::SDL_INIT_ERROR));
         return;
@@ -31,4 +33,19 @@ SDL::~SDL() {
     mainRenderer.reset();
     mainWindow.reset();
     SDL_Quit();
+}
+
+void SDL::BeginFrame() {
+    SDL_SetRenderDrawColor(mainRenderer.get(), 0x00, 0x00, 0x00, 0xFF);
+    SDL_RenderClear(mainRenderer.get());
+}
+
+void SDL::EndFrame() {
+    SDL_RenderPresent(mainRenderer.get());
+    framecounter++;
+    if (SDL_TICKS_PASSED(SDL_GetTicks(), timecounter + 1000)) {
+        std::cout << framecounter << " fps" << std::endl;
+        framecounter = 0;
+        timecounter = SDL_GetTicks();
+    }
 }

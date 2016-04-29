@@ -26,10 +26,15 @@ public:
         return instance;
     }
 
+    void BeginFrame();
+    void EndFrame();
+
     SDL(SDL const &) = delete;
     void operator=(SDL const &) = delete;
 
 private:
+    Uint32 framecounter;
+    Uint32 timecounter;
     std::unique_ptr<SDL_Window, SDL_Deleter> mainWindow;
     std::unique_ptr<SDL_Renderer, SDL_Deleter> mainRenderer;
 
